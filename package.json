@@ -1,0 +1,37 @@
+{
+  "name": "wonderpush-webplugin-optin-dialog",
+  "version": "1.0.0",
+  "description": "WonderPush Web SDK plugin to present the user an opt-in dialog before prompting her for push permission.",
+  "main": "src/optin-dialog.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wonderpush/wonderpush-webplugin-optin-dialog.git"
+  },
+  "keywords": [
+    "wonderpush",
+    "web",
+    "plugin",
+    "optin",
+    "dialog"
+  ],
+  "author": "WonderPush",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/wonderpush/wonderpush-webplugin-optin-dialog/issues"
+  },
+  "homepage": "https://github.com/wonderpush/wonderpush-webplugin-optin-dialog#readme",
+  "devDependencies": {
+    "del": "^3.0.0",
+    "gulp": "^3.9.1",
+    "gulp-clean-css": "^3.4.2",
+    "gulp-header": "^1.8.8",
+    "gulp-jshint": "^2.0.4",
+    "gulp-less": "^3.3.0",
+    "gulp-sass": "^3.1.0",
+    "gulp-sourcemaps": "^2.6.0",
+    "gulp-stylelint": "^3.9.0",
+    "gulp-uglify": "^3.0.0",
+    "jshint": "^2.9.4",
+    "lazypipe": "^1.0.1"
+  }
+}
