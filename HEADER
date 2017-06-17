@@ -1,5 +1,5 @@
 /**
- * WonderPush Web SDK Plugin: <%= pkg.main.replace(/^.*\/([^\.]*)\..*$/, '$1') %>
+ * WonderPush Web SDK Plugin: <%= plugin %>
  * Package: <%= pkg.name %>
  * Version: <%= pkg.version %>
  * Description: <%= pkg.description %>
