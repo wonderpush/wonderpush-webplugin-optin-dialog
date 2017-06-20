@@ -3,6 +3,7 @@ let fs = require('fs');
 let path = require('path');
 let pkg = require('./package.json');
 let gulp = require('gulp');
+let Q = require('q');
 let lazypipe = require('lazypipe');
 let sourcemaps = require('gulp-sourcemaps');
 let uglify = require('gulp-uglify');
@@ -14,11 +15,15 @@ let cleanCSS = require('gulp-clean-css');
 let del = require('del');
 let header = require('gulp-header');
 let jsdoc = require('gulp-jsdoc3');
+let git = require('gulp-git');
+let copy = require('gulp-copy');
 
 const PLUGIN_NAME = pkg.main.replace(/^.*\/([^\.]*)\..*$/, '$1');
 
 const DIST_DIR = './dist';
 const DOC_DIR = './doc';
+const DOC_PUBLISH_DIR = './.gh-pages.git';
+const MAIN_PLUGIN_CLASS = PLUGIN_NAME.replace(/\w[^\s-]*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();}).replace('-', ''); // foo-bar becomes FooBar
 
 const JS_GLOB   = ['./src/*.js'];
 const CSS_GLOB  = ['./src/*.css'];
@@ -150,4 +155,61 @@ gulp.task('minify-sass', function() {
 
 gulp.task('watch-sass', function() {
     return gulp.watch(SASS_GLOB, ['minify-sass']);
+});
+
+gulp.task('doc-prepare-publish-repo', function() {
+    try { fs.mkdirSync(DOC_PUBLISH_DIR); } catch (e) {}
+    var noop = function(){};
+    return Q.nfcall(git.init, {cwd: DOC_PUBLISH_DIR})
+        .then(function() {
+            return Q.nfcall(git.addRemote, 'origin', pkg.repository.url, {cwd: DOC_PUBLISH_DIR});
+        }).catch(noop) // (ignore error, remote may already exist)
+        .then(function() {
+            return Q.nfcall(git.fetch, 'origin', 'gh-pages', {cwd: DOC_PUBLISH_DIR});
+        }).catch(noop) // (ignore error, gh-pages may not already exist)
+        .then(function() {
+            return Q.nfcall(git.checkout, 'gh-pages', {args: '-b', cwd: DOC_PUBLISH_DIR});
+        }).catch(noop) // (ignore error, gh-pages may already exist)
+        .then(function() {
+            return Q.nfcall(git.merge, 'origin/gh-pages', {args: '--ff-only', cwd: DOC_PUBLISH_DIR});
+        }).catch(noop); // (ignore error, gh-pages may not already exist)
+});
+
+gulp.task('doc-prepare-publish', ['clean', 'doc', 'doc-prepare-publish-repo'], function() {
+    return new Promise(function(resolve, reject) {
+        var cb = function(err) {
+            if (err) reject(err);
+            else resolve();
+        };
+        gulp.src(path.join(DOC_DIR, pkg.name, pkg.version, '**', '*'))
+            .pipe(copy(DOC_PUBLISH_DIR, {prefix: 2}))
+            .on('data', function() {}) // copy is not a writable stream, we still have to make the data flow
+            .on('error', cb)
+            .on('end', function() {
+                fs.writeFileSync(path.join(DOC_PUBLISH_DIR, '.nojekyll'), '');
+                fs.writeFileSync(path.join(DOC_PUBLISH_DIR, 'index.html'), '<html><head><meta http-equiv="refresh" content="0;url=latest/index.html" /></head><body></body></html>');
+                fs.writeFileSync(path.join(DOC_PUBLISH_DIR, 'api.html'), '<html><head><meta http-equiv="refresh" content="0;url=latest/api.html" /></head><body></body></html>');
+                try { fs.unlinkSync(path.join(DOC_PUBLISH_DIR, 'latest')); } catch (e) {}
+                fs.symlinkSync(pkg.version, path.join(DOC_PUBLISH_DIR, 'latest'), 'dir');
+                fs.writeFileSync(path.join(DOC_PUBLISH_DIR, pkg.version, 'api.html'), '<html><head><meta http-equiv="refresh" content="0;url=' + MAIN_PLUGIN_CLASS + '.html" /></head><body></body></html>');
+                gulp.src([
+                        path.join(pkg.version, '**', '*'),
+                        '.nojekyll',
+                        'index.html',
+                        'api.html',
+                        'latest',
+                ], {
+                    read: false,
+                    cwd: DOC_PUBLISH_DIR,
+                })
+                .pipe(git.add({cwd: DOC_PUBLISH_DIR}))
+                    .pipe(git.commit('Documentation site for ' + pkg.version, {cwd: DOC_PUBLISH_DIR}))
+                    .on('error', cb)
+                    .on('end', cb);
+            });
+    });
+});
+
+gulp.task('doc-publish', ['doc-prepare-publish'], function(cb) {
+    git.push('origin', 'gh-pages', {cwd: DOC_PUBLISH_DIR}, cb);
 });
