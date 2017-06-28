@@ -1,3 +1,4 @@
+"use strict";
 // vim: ts=4 sts=4 sw=4 et
 let fs = require('fs');
 let pkg = require('./package.json');
