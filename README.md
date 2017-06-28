@@ -5,9 +5,7 @@ WonderPush Web SDK plugin to present the user an opt-in dialog before prompting 
 
 Here is a screenshot of the default dialog shown to the user if no option is given:
 
-<center>
 ![Screenshot of the plugin dialog](screenshot.png)
-</center>
 
 It appears centered on the top edge of the page and does not scroll with the page.
 The actual icon that will be show is the one you configured in the WonderPush dashboard.
