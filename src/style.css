@@ -1,4 +1,5 @@
 .wp-optin-dialog-container {
+  z-index: 10000;
   width: 420px;
   max-width: 100%;
   box-sizing: border-box;
