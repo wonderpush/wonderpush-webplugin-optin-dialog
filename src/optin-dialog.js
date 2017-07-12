@@ -33,6 +33,7 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
   this.negativeButton = options.negativeButton || "Later";
   this.style = options.style;
   this.icon = options.icon !== undefined ? options.icon : WonderPushSDK.getNotificationIcon();
+  this.hidePoweredBy = options.hidePoweredBy ? true : false;
 
   this.triggers = options.triggers;
 
@@ -91,11 +92,13 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
     var buttonsDiv = document.createElement('div');
     buttonsDiv.className = cssPrefix+'buttons';
     boxDiv.appendChild(buttonsDiv);
-    var poweredByLink = document.createElement('a');
-    poweredByLink.textContent = "Powered by WonderPush";
-    poweredByLink.href = "https://www.wonderpush.com/";
-    poweredByLink.className = cssPrefix+'powered-by';
-    buttonsDiv.appendChild(poweredByLink);
+    if (!this.hidePoweredBy) {
+      var poweredByLink = document.createElement('a');
+      poweredByLink.textContent = "Powered by WonderPush";
+      poweredByLink.href = "https://www.wonderpush.com/";
+      poweredByLink.className = cssPrefix+'powered-by';
+      buttonsDiv.appendChild(poweredByLink);
+    }
 
     var btnConfig = {
       positiveButton: {

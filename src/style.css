@@ -59,6 +59,7 @@
   background-position: bottom right;
   background-repeat: no-repeat;
   text-decoration: none;
+  margin-right: .5em;
 }
 
 .wp-optin-dialog-container .wp-optin-dialog-button {
@@ -73,7 +74,6 @@
   display: flex;
   min-width: 5em;
   padding: .25em .5em;
-  margin-left: .5em;
 }
 
 .wp-optin-dialog-container .wp-optin-dialog-button label {
@@ -85,6 +85,7 @@
   border-color: #46a4f3;
   color: white;
   background-image: linear-gradient(to bottom, #62b3f4, #0486f6);
+  margin-left: .5em;
 }
 
 .wp-optin-dialog-container .wp-optin-dialog-close {
