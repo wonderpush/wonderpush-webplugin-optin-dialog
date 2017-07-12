@@ -33,7 +33,7 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
   this.negativeButton = options.negativeButton || "Later";
   this.style = options.style;
   this.icon = options.icon !== undefined ? options.icon : WonderPushSDK.getNotificationIcon();
-  this.hidePoweredBy = options.hidePoweredBy ? true : false;
+  this.hidePoweredBy = !!options.hidePoweredBy;
 
   this.triggers = options.triggers;
 
