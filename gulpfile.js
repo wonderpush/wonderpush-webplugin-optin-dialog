@@ -18,9 +18,12 @@ let header = require('gulp-header');
 let jsdoc = require('gulp-jsdoc3');
 let git = require('gulp-git');
 let copy = require('gulp-copy');
+let babel = require('gulp-babel');
+let cssBase64 = require('gulp-css-base64');
 
 const PLUGIN_NAME = pkg.main.replace(/^.*\/([^\.]*)\..*$/, '$1');
 
+const BUILD_DIR = './build';
 const DIST_DIR = './dist';
 const DOC_DIR = './doc';
 const DOC_PUBLISH_DIR = './.gh-pages.git';
@@ -52,13 +55,13 @@ let lintCSS = lazypipe()
 let lintLESS = lintCSS;
 let lintSASS = lintCSS;
 let processCSS = lazypipe()
-    .pipe(cleanCSS)
-    .pipe(addHeader);
+    .pipe(cssBase64)
+    .pipe(cleanCSS);
 
 gulp.task('default', ['clean', 'build', 'doc'], function() {
 });
 
-gulp.task('build', ['minify-js', 'minify-css', 'minify-less', 'minify-sass', 'copy-res'], function() {
+gulp.task('build', ['dist-js', 'dist-css', 'dist-less', 'dist-sass', 'copy-res'], function() {
 });
 
 gulp.task('watch', ['watch-js', 'watch-css', 'watch-less', 'watch-sass'], function() {
@@ -93,7 +96,7 @@ gulp.task('doc', function(cb) {
 });
 
 gulp.task('clean', function() {
-    return del([DIST_DIR, DOC_DIR]);
+    return del([BUILD_DIR, DIST_DIR, DOC_DIR]);
 });
 
 gulp.task('copy-res', function() {
@@ -101,12 +104,37 @@ gulp.task('copy-res', function() {
         .pipe(gulp.dest(DIST_DIR));
 });
 
-gulp.task('minify-js', function() {
+gulp.task('dist-js', ['minify-css', 'minify-less', 'minify-sass', 'copy-res'], function() {
     return gulp.src(JS_GLOB)
         .pipe(jshint())
         .pipe(jshint.reporter())
         .pipe(jshint.reporter('fail'))
         .pipe(sourcemaps.init())
+        .pipe(babel({
+            plugins: [
+                function({types: t}) {
+                    return {
+                        visitor: {
+                            CallExpression(path) {
+                                if (t.isMemberExpression(path.node.callee)
+                                        && t.isIdentifier(path.node.callee.object, {name: 'WonderPushSDK'})
+                                        && t.isIdentifier(path.node.callee.property, {name: 'loadStylesheet'})
+                                        && path.node.arguments.every(arg => t.isStringLiteral(arg))) {
+                                    const inputContents = path.node.arguments.map(arg => fs.readFileSync(`${BUILD_DIR}/${arg.value}`));
+                                    const replacementSource = `(function() {
+                                      var tag = document.createElement('style');
+                                      tag.type = 'text/css';
+                                      tag.appendChild(document.createTextNode(${JSON.stringify(inputContents.join(''))}));
+                                      document.head.appendChild(tag);
+                                    })()`;
+                                    path.replaceWithSourceString(replacementSource);
+                                }
+                            },
+                        },
+                    };
+                },
+            ],
+        }))
         .pipe(uglify())
         .pipe(addHeader())
         .pipe(sourcemaps.write('./'))
@@ -114,48 +142,71 @@ gulp.task('minify-js', function() {
 });
 
 gulp.task('watch-js', function() {
-    return gulp.watch(JS_GLOB, ['minify-js']);
+    return gulp.watch(JS_GLOB, ['dist-js']);
 });
 
 gulp.task('minify-css', function() {
     return gulp.src(CSS_GLOB)
+        .pipe(processCSS())
+        .pipe(gulp.dest(BUILD_DIR));
+});
+
+gulp.task('dist-css', function() {
+  return gulp.src(CSS_GLOB)
         .pipe(lintCSS())
         .pipe(sourcemaps.init())
         .pipe(processCSS())
+        .pipe(addHeader())
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest(DIST_DIR));
 });
 
 gulp.task('watch-css', function() {
-    return gulp.watch(CSS_GLOB, ['minify-css']);
+    return gulp.watch(CSS_GLOB, ['minify-css', 'dist-css', 'dist-js']);
 });
 
 gulp.task('minify-less', function() {
     return gulp.src(LESS_GLOB)
+        .pipe(less())
+        .pipe(processCSS())
+        .pipe(gulp.dest(BUILD_DIR));
+});
+
+gulp.task('dist-less', function() {
+  return gulp.src(LESS_GLOB)
         .pipe(lintLESS())
         .pipe(sourcemaps.init())
         .pipe(less())
         .pipe(processCSS())
+        .pipe(addHeader())
         .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest(DIST_DIR));
+        .pipe(gulp.dest(BUILD_DIR));
 });
 
 gulp.task('watch-less', function() {
-    return gulp.watch(LESS_GLOB, ['minify-less']);
+    return gulp.watch(LESS_GLOB, ['minify-less', 'dist-less', 'dist-js']);
 });
 
 gulp.task('minify-sass', function() {
     return gulp.src(SASS_GLOB)
-        .pipe(lintSASS())
-        .pipe(sourcemaps.init())
         .pipe(sass().on('error', sass.logError))
         .pipe(processCSS())
-        .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest(DIST_DIR));
+        .pipe(gulp.dest(BUILD_DIR));
+});
+
+gulp.task('dist-sass', function() {
+  return gulp.src(SASS_GLOB)
+      .pipe(lintSASS())
+      .pipe(sourcemaps.init())
+      .pipe(sass().on('error', sass.logError))
+      .pipe(processCSS())
+      .pipe(addHeader())
+      .pipe(sourcemaps.write('./'))
+      .pipe(gulp.dest(DIST_DIR));
 });
 
 gulp.task('watch-sass', function() {
-    return gulp.watch(SASS_GLOB, ['minify-sass']);
+    return gulp.watch(SASS_GLOB, ['minify-sass', 'dist-sass', 'dist-js']);
 });
 
 gulp.task('doc-prepare-publish-repo', function() {
