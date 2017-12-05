@@ -140,10 +140,11 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
       stopRegistration();
     });
 
-    var container = window.document.body;
-    container.appendChild(boxDiv);
+    document.body.appendChild(boxDiv);
     var stopRegistration = function() {
-      container.removeChild(boxDiv);
+      // Note: boxDiv could have been moved out of BODY under another node
+      //       hence use boxDiv.parentNode instead of document.body.
+      boxDiv.parentNode.removeChild(boxDiv);
       this.registrationInProgress = false;
     }.bind(this);
   }.bind(this);
