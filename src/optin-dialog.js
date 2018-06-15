@@ -119,13 +119,13 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
     if (_title) {
       var titleDiv = document.createElement('div');
       titleDiv.className = cssPrefix+'title';
-      titleDiv.textContent = _title;
+      titleDiv.innerHTML = _title;
       textDiv.appendChild(titleDiv);
     }
     if (_message) {
       var messageDiv = document.createElement('div');
       messageDiv.className = cssPrefix+'message';
-      messageDiv.textContent = _message;
+      messageDiv.innerHTML = _message;
       textDiv.appendChild(messageDiv);
     }
 
@@ -134,7 +134,7 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
     boxDiv.appendChild(buttonsDiv);
     if (!_hidePoweredBy) {
       var poweredByLink = document.createElement('a');
-      poweredByLink.textContent = "Powered by WonderPush";
+      poweredByLink.innerHTML = "Powered by WonderPush";
       poweredByLink.href = "https://www.wonderpush.com/";
       poweredByLink.className = cssPrefix+'powered-by';
       buttonsDiv.appendChild(poweredByLink);
@@ -184,7 +184,7 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
       });
       buttonsDiv.appendChild(link);
       var label = document.createElement('label');
-      label.textContent = btnConfig[btn].label;
+      label.innerHTML = btnConfig[btn].label;
       link.appendChild(label);
     });
 
