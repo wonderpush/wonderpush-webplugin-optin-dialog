@@ -41,11 +41,24 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
 
   this.registrationInProgress = false;
 
+  var _hideDialogEventSource = undefined;
+  var _hideDialog = undefined;
+
   WonderPushSDK.checkTriggers(this.triggers, function() {
     this.showDialog();
   }.bind(this));
 
+  this.hideDialog = function() {
+    if (_hideDialog) {
+      _hideDialog();
+      this.registrationInProgress = false;
+      _hideDialog = undefined;
+      _hideDialogEventSource = undefined;
+    }
+  }.bind(this);
+
   this.showDialog = function() {
+    var that = this;
     if (this.registrationInProgress) {
       WonderPushSDK.logDebug('Registration already in progress');
       return;
@@ -61,6 +74,13 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
         boxDiv.style[key] = this.style[key];
       }
     }
+
+    _hideDialog = function() {
+      // Note: boxDiv could have been moved out of BODY under another node
+      //       hence use boxDiv.parentNode instead of document.body.
+      boxDiv.parentNode.removeChild(boxDiv);
+    };
+    _hideDialogEventSource = boxDiv;
 
     var bodyDiv = document.createElement('div');
     bodyDiv.className = cssPrefix+'body';
@@ -104,12 +124,12 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
       positiveButton: {
         click: function(event) {
           WonderPushSDK.setNotificationEnabled(true, event);
-          stopRegistration();
+          that.hideDialog();
         },
       },
       negativeButton: {
         click: function(event) {
-          stopRegistration();
+          that.hideDialog();
         },
       },
     };
@@ -137,16 +157,10 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
     closeButton.addEventListener('click', function(event) {
       event.preventDefault();
       event.stopPropagation();
-      stopRegistration();
+      that.hideDialog();
     });
 
     document.body.appendChild(boxDiv);
-    var stopRegistration = function() {
-      // Note: boxDiv could have been moved out of BODY under another node
-      //       hence use boxDiv.parentNode instead of document.body.
-      boxDiv.parentNode.removeChild(boxDiv);
-      this.registrationInProgress = false;
-    }.bind(this);
   }.bind(this);
 
 });
