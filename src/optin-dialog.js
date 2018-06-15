@@ -55,10 +55,12 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
    */
   this.hideDialog = function() {
     if (_hideDialog) {
-      _hideDialog();
-      this.registrationInProgress = false;
-      _hideDialog = undefined;
-      _hideDialogEventSource = undefined;
+      if (_hideDialogEventSource.dispatchEvent(new Event('wonderpush-webplugin-optin-dialog.hide', {bubbles: true, cancelable: true}))) {
+        _hideDialog();
+        this.registrationInProgress = false;
+        _hideDialog = undefined;
+        _hideDialogEventSource = undefined;
+      }
     }
   }.bind(this);
 
@@ -133,13 +135,17 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
     var btnConfig = {
       positiveButton: {
         click: function(event) {
-          WonderPushSDK.setNotificationEnabled(true, event);
-          that.hideDialog();
+          if (event.target.dispatchEvent(new Event('wonderpush-webplugin-optin-dialog.positiveButton.click', {bubbles: true, cancelable: true}))) {
+            WonderPushSDK.setNotificationEnabled(true, event);
+            that.hideDialog();
+          }
         },
       },
       negativeButton: {
         click: function(event) {
-          that.hideDialog();
+          if (event.target.dispatchEvent(new Event('wonderpush-webplugin-optin-dialog.negativeButton.click', {bubbles: true, cancelable: true}))) {
+            that.hideDialog();
+          }
         },
       },
     };
@@ -167,10 +173,18 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
     closeButton.addEventListener('click', function(event) {
       event.preventDefault();
       event.stopPropagation();
-      that.hideDialog();
+      if (event.target.dispatchEvent(new Event('wonderpush-webplugin-optin-dialog.closeButton.click', {bubbles: true, cancelable: true}))) {
+        that.hideDialog();
+      }
     });
 
-    document.body.appendChild(boxDiv);
+    if (document.body.dispatchEvent(new Event('wonderpush-webplugin-optin-dialog.show', {bubbles: true, cancelable: true}))) {
+      document.body.appendChild(boxDiv);
+    } else {
+      this.registrationInProgress = false;
+      _hideDialog = undefined;
+      _hideDialogEventSource = undefined;
+    }
   }.bind(this);
 
 });
