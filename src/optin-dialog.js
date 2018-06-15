@@ -52,9 +52,16 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
    * Hides the dialog.
    * @function
    * @memberof! OptinDialog.prototype
+   * @fires OptinDialog#event:"wonderpush-webplugin-optin-dialog.hide"
    */
   this.hideDialog = function() {
     if (_hideDialog) {
+      /**
+       * Hide event.
+       *
+       * This event bubbles and is cancelable.
+       * @event OptinDialog#event:"wonderpush-webplugin-optin-dialog.hide"
+       */
       if (_hideDialogEventSource.dispatchEvent(new Event('wonderpush-webplugin-optin-dialog.hide', {bubbles: true, cancelable: true}))) {
         _hideDialog();
         this.registrationInProgress = false;
@@ -68,6 +75,7 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
    * Shows the dialog.
    * @function
    * @memberof! OptinDialog.prototype
+   * @fires OptinDialog#event:"wonderpush-webplugin-optin-dialog.show"
    */
   this.showDialog = function() {
     var that = this;
@@ -135,6 +143,12 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
     var btnConfig = {
       positiveButton: {
         click: function(event) {
+          /**
+           * Positive button click event.
+           *
+           * This event bubbles and is cancelable.
+           * @event OptinDialog#event:"wonderpush-webplugin-optin-dialog.positiveButton.click"
+           */
           if (event.target.dispatchEvent(new Event('wonderpush-webplugin-optin-dialog.positiveButton.click', {bubbles: true, cancelable: true}))) {
             WonderPushSDK.setNotificationEnabled(true, event);
             that.hideDialog();
@@ -143,6 +157,12 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
       },
       negativeButton: {
         click: function(event) {
+          /**
+           * Negative button click event.
+           *
+           * This event bubbles and is cancelable.
+           * @event OptinDialog#event:"wonderpush-webplugin-optin-dialog.negativeButton.click"
+           */
           if (event.target.dispatchEvent(new Event('wonderpush-webplugin-optin-dialog.negativeButton.click', {bubbles: true, cancelable: true}))) {
             that.hideDialog();
           }
@@ -173,11 +193,23 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
     closeButton.addEventListener('click', function(event) {
       event.preventDefault();
       event.stopPropagation();
+      /**
+       * Close button click event.
+       *
+       * This event bubbles and is cancelable.
+       * @event OptinDialog#event:"wonderpush-webplugin-optin-dialog.closeButton.click"
+       */
       if (event.target.dispatchEvent(new Event('wonderpush-webplugin-optin-dialog.closeButton.click', {bubbles: true, cancelable: true}))) {
         that.hideDialog();
       }
     });
 
+    /**
+     * Show event.
+     *
+     * This event bubbles and is cancelable.
+     * @event OptinDialog#event:"wonderpush-webplugin-optin-dialog.show"
+     */
     if (document.body.dispatchEvent(new Event('wonderpush-webplugin-optin-dialog.show', {bubbles: true, cancelable: true}))) {
       document.body.appendChild(boxDiv);
     } else {
