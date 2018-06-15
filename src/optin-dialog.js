@@ -27,24 +27,24 @@
  */
 WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, options) {
 
-  this.title = options.title !== undefined ? options.title : 'Would you like to subscribe to push notifications?';
-  this.message = options.message !== undefined ? options.message : 'You can always unsubscribe at any time.';
-  this.positiveButton = options.positiveButton || "Subscribe";
-  this.negativeButton = options.negativeButton || "Later";
-  this.style = options.style;
-  this.icon = options.icon !== undefined ? options.icon : WonderPushSDK.getNotificationIcon();
-  this.hidePoweredBy = !!options.hidePoweredBy;
+  var _title = options.title !== undefined ? options.title : 'Would you like to subscribe to push notifications?';
+  var _message = options.message !== undefined ? options.message : 'You can always unsubscribe at any time.';
+  var _positiveButton = options.positiveButton || "Subscribe";
+  var _negativeButton = options.negativeButton || "Later";
+  var _style = options.style;
+  var _icon = options.icon !== undefined ? options.icon : WonderPushSDK.getNotificationIcon();
+  var _hidePoweredBy = !!options.hidePoweredBy;
 
-  this.triggers = options.triggers;
+  var _triggers = options.triggers;
 
   WonderPushSDK.loadStylesheet('style.css');
 
-  this.registrationInProgress = false;
+  var _registrationInProgress = false;
 
   var _hideDialogEventSource = undefined;
   var _hideDialog = undefined;
 
-  WonderPushSDK.checkTriggers(this.triggers, function() {
+  WonderPushSDK.checkTriggers(_triggers, function() {
     this.showDialog();
   }.bind(this));
 
@@ -64,7 +64,7 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
        */
       if (_hideDialogEventSource.dispatchEvent(new Event('wonderpush-webplugin-optin-dialog.hide', {bubbles: true, cancelable: true}))) {
         _hideDialog();
-        this.registrationInProgress = false;
+        _registrationInProgress = false;
         _hideDialog = undefined;
         _hideDialogEventSource = undefined;
       }
@@ -79,19 +79,19 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
    */
   this.showDialog = function() {
     var that = this;
-    if (this.registrationInProgress) {
+    if (_registrationInProgress) {
       WonderPushSDK.logDebug('Registration already in progress');
       return;
     }
 
-    this.registrationInProgress = true;
+    _registrationInProgress = true;
     var cssPrefix = 'wp-optin-dialog-';
 
     var boxDiv = document.createElement('div');
     boxDiv.className = cssPrefix + 'container';
-    if (this.style) {
-      for (var key in this.style) {
-        boxDiv.style[key] = this.style[key];
+    if (_style) {
+      for (var key in _style) {
+        boxDiv.style[key] = _style[key];
       }
     }
 
@@ -106,33 +106,33 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
     bodyDiv.className = cssPrefix+'body';
     boxDiv.appendChild(bodyDiv);
 
-    if (this.icon) {
+    if (_icon) {
       var iconDiv = document.createElement('div');
       iconDiv.className = cssPrefix+'icon';
-      iconDiv.style.backgroundImage = "url(" + this.icon + ")";
+      iconDiv.style.backgroundImage = "url(" + _icon + ")";
       bodyDiv.appendChild(iconDiv);
     }
 
     var textDiv = document.createElement('div');
     textDiv.className = cssPrefix+'text';
     bodyDiv.appendChild(textDiv);
-    if (this.title) {
+    if (_title) {
       var titleDiv = document.createElement('div');
       titleDiv.className = cssPrefix+'title';
-      titleDiv.textContent = this.title;
+      titleDiv.textContent = _title;
       textDiv.appendChild(titleDiv);
     }
-    if (this.message) {
+    if (_message) {
       var messageDiv = document.createElement('div');
       messageDiv.className = cssPrefix+'message';
-      messageDiv.textContent = this.message;
+      messageDiv.textContent = _message;
       textDiv.appendChild(messageDiv);
     }
 
     var buttonsDiv = document.createElement('div');
     buttonsDiv.className = cssPrefix+'buttons';
     boxDiv.appendChild(buttonsDiv);
-    if (!this.hidePoweredBy) {
+    if (!_hidePoweredBy) {
       var poweredByLink = document.createElement('a');
       poweredByLink.textContent = "Powered by WonderPush";
       poweredByLink.href = "https://www.wonderpush.com/";
@@ -142,6 +142,7 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
 
     var btnConfig = {
       positiveButton: {
+        label: _positiveButton,
         click: function(event) {
           /**
            * Positive button click event.
@@ -156,6 +157,7 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
         },
       },
       negativeButton: {
+        label: _negativeButton,
         click: function(event) {
           /**
            * Negative button click event.
@@ -182,9 +184,9 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
       });
       buttonsDiv.appendChild(link);
       var label = document.createElement('label');
-      label.textContent = this[btn];
+      label.textContent = btnConfig[btn].label;
       link.appendChild(label);
-    }.bind(this));
+    });
 
     var closeButton = document.createElement('a');
     boxDiv.appendChild(closeButton);
@@ -213,7 +215,7 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
     if (document.body.dispatchEvent(new Event('wonderpush-webplugin-optin-dialog.show', {bubbles: true, cancelable: true}))) {
       document.body.appendChild(boxDiv);
     } else {
-      this.registrationInProgress = false;
+      _registrationInProgress = false;
       _hideDialog = undefined;
       _hideDialogEventSource = undefined;
     }
