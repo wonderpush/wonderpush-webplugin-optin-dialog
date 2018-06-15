@@ -48,6 +48,11 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
     this.showDialog();
   }.bind(this));
 
+  /**
+   * Hides the dialog.
+   * @function
+   * @memberof! OptinDialog.prototype
+   */
   this.hideDialog = function() {
     if (_hideDialog) {
       _hideDialog();
@@ -57,6 +62,11 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
     }
   }.bind(this);
 
+  /**
+   * Shows the dialog.
+   * @function
+   * @memberof! OptinDialog.prototype
+   */
   this.showDialog = function() {
     var that = this;
     if (this.registrationInProgress) {
