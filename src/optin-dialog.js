@@ -41,8 +41,8 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
 
   var _registrationInProgress = false;
 
-  var _hideDialogEventSource = undefined;
-  var _hideDialog = undefined;
+  var _hideDialogEventSource;
+  var _hideDialog;
 
   WonderPushSDK.checkTriggers(_triggers, function() {
     this.showDialog();
