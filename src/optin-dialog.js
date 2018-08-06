@@ -13,6 +13,12 @@
  * @property {string} [negativeButton] - The dialog negative button message.
  * @property {string} [icon] - The dialog icon URL. Defaults to the default notification icon configured in the project.
  * @property {Object} [style] - Styles to be added to the dialog container.
+ * @property {number|boolean} [closeSnooze=false] - How long to force to wait before presenting the dialog again, if the user clicks the close button.
+ *                                                  Use `false` to not set any extra snooze, `true` to never present again, or give a duration in milliseconds.
+ *                                                  Defaults to `false`, which relies on the SDK's default snooze of 12 hours without forcing extra snooze.
+ * @property {number|boolean} [negativeSnooze=604800000] - How long to force to wait before presenting the dialog again, if the user clicks the close button.
+ *                                                     Use `false` to ignore, `true` to never present again, or give a duration in milliseconds.
+ *                                                     Defaults to 604800, 7 days.
  */
 /**
  * The WonderPush JavaScript SDK instance.
@@ -34,6 +40,8 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
   var _style = options.style;
   var _icon = options.icon !== undefined ? options.icon : WonderPushSDK.getNotificationIcon();
   var _hidePoweredBy = !!options.hidePoweredBy;
+  var _closeSnooze = options.closeSnooze !== undefined ? options.closeSnooze : false;
+  var _negativeSnooze = options.negativeSnooze !== undefined ? options.negativeSnooze : 604800000;
 
   var _triggers = options.triggers;
 
@@ -159,6 +167,7 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
       negativeButton: {
         label: _negativeButton,
         click: function(event) {
+          if (_negativeSnooze !== undefined && _negativeSnooze !== false && WonderPushSDK.snoozeTriggers) WonderPushSDK.snoozeTriggers(_negativeSnooze);
           /**
            * Negative button click event.
            *
@@ -195,6 +204,7 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
     closeButton.addEventListener('click', function(event) {
       event.preventDefault();
       event.stopPropagation();
+      if (_closeSnooze !== undefined && _closeSnooze !== false && WonderPushSDK.snoozeTriggers) WonderPushSDK.snoozeTriggers(_closeSnooze);
       /**
        * Close button click event.
        *
