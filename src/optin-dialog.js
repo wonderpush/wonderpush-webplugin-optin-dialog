@@ -117,7 +117,7 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
     if (_icon) {
       var iconDiv = document.createElement('div');
       iconDiv.className = cssPrefix+'icon';
-      iconDiv.style.backgroundImage = "url(" + _icon + ")";
+      iconDiv.style.backgroundImage = "url(" + _icon.replace('(', '%28').replace(')', '%29') + ")";
       bodyDiv.appendChild(iconDiv);
     }
 
