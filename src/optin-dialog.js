@@ -165,7 +165,7 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
            * @event OptinDialog#event:"wonderpush-webplugin-optin-dialog.positiveButton.click"
            */
           if (event.target.dispatchEvent(new Event('wonderpush-webplugin-optin-dialog.positiveButton.click', {bubbles: true, cancelable: true}))) {
-            WonderPushSDK.setNotificationEnabled(true, event);
+            WonderPushSDK.subscribeToNotifications(event);
             that.hideDialog();
           }
         },
