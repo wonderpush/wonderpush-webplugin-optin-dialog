@@ -52,9 +52,15 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
   var _hideDialogEventSource;
   var _hideDialog;
 
-  WonderPushSDK.checkTriggers(_triggers, function() {
-    this.showDialog();
-  }.bind(this));
+  if (WonderPushSDK.waitTriggers) { // WonderPush SDK 1.1.18.0 or above
+    WonderPushSDK.waitTriggers(_triggers).then(function() {
+      this.showDialog();
+    }.bind(this));
+  } else {
+    WonderPushSDK.checkTriggers(_triggers, function() {
+      this.showDialog();
+    }.bind(this));
+  }
 
   /**
    * Hides the dialog.
