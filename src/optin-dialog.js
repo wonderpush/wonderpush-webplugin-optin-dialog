@@ -148,7 +148,7 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
     boxDiv.appendChild(buttonsDiv);
     if (!_hidePoweredBy) {
       var poweredByLink = document.createElement('a');
-      poweredByLink.innerHTML = "Powered by WonderPush";
+      poweredByLink.innerHTML = "Web push by WonderPush";
       poweredByLink.href = "https://www.wonderpush.com/";
       poweredByLink.className = cssPrefix+'powered-by';
       poweredByLink.setAttribute('title', 'Web and mobile push notifications');
