@@ -38,10 +38,31 @@
  * @see {@link https://wonderpush.github.io/wonderpush-javascript-sdk/latest/WonderPushPluginSDK.html#.TriggersConfig|WonderPush JavaScript Plugin SDK triggers configuration reference}
  */
 WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, options) {
-  var _title = options.title !== undefined ? options.title : 'Would you like to subscribe to push notifications?';
-  var _message = options.message !== undefined ? options.message : 'You can always unsubscribe at any time.';
-  var _positiveButton = options.positiveButton || "Subscribe";
-  var _negativeButton = options.negativeButton || "Later";
+  var translations = {
+    "fr": {
+      "Would you like to subscribe to push notifications?": "Souhaitez-vous vous inscrire aux notifications?",
+      "You can always unsubscribe at any time.": "Vous pouvez vous désinscrire à tout moment.",
+      "Subscribe": "Je m'inscris",
+      "Later": "Plus tard",
+    },
+  };
+  var locales = WonderPushSDK.getLocales ? WonderPushSDK.getLocales() || [] : [];
+  var language = locales.map(function(x) { return x.split(/[-_]/)[0]; })[0] || (navigator.language || '').split('-')[0];
+
+  /**
+   * Translates the given text
+   * @param text
+   * @returns {*}
+   */
+  var _ = function (text) {
+    if (translations.hasOwnProperty(language) && translations[language][text]) return translations[language][text];
+    return text;
+  };
+
+  var _title = options.title !== undefined ? options.title : _('Would you like to subscribe to push notifications?');
+  var _message = options.message !== undefined ? options.message : _('You can always unsubscribe at any time.');
+  var _positiveButton = options.positiveButton || _("Subscribe");
+  var _negativeButton = options.negativeButton || _("Later");
   var _style = options.style;
   var _icon = options.icon !== undefined ? options.icon : WonderPushSDK.getNotificationIcon();
   var _hidePoweredBy = !!options.hidePoweredBy;
