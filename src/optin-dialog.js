@@ -19,6 +19,12 @@
  * @property {number|boolean} [negativeSnooze=604800000] - How long to force to wait before presenting the dialog again, if the user clicks the close button.
  *                                                     Use `false` to ignore, `true` to never present again, or give a duration in milliseconds.
  *                                                     Defaults to 604800, 7 days.
+ * @property {string} [positiveButtonBackgroundColor] - The hex color code of the positive button.
+ * @property {string} [negativeButtonBackgroundColor] - The hex color code of the negative button.
+ * @property {string} [positiveButtonTextColor] - The hex color code of the positive button.
+ * @property {string} [negativeButtonTextColor] - The hex color code of the negative button.
+ * @property {string} [backgroundColor] - The hex color code of the dialog background.
+ * @property {string} [textColor] - The hex color code of the dialog text.
  */
 /**
  * The WonderPush JavaScript SDK instance.
@@ -32,7 +38,6 @@
  * @see {@link https://wonderpush.github.io/wonderpush-javascript-sdk/latest/WonderPushPluginSDK.html#.TriggersConfig|WonderPush JavaScript Plugin SDK triggers configuration reference}
  */
 WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, options) {
-
   var _title = options.title !== undefined ? options.title : 'Would you like to subscribe to push notifications?';
   var _message = options.message !== undefined ? options.message : 'You can always unsubscribe at any time.';
   var _positiveButton = options.positiveButton || "Subscribe";
@@ -103,6 +108,12 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
 
     var boxDiv = document.createElement('div');
     boxDiv.className = cssPrefix + 'container';
+    if (options.backgroundColor) {
+      boxDiv.style.backgroundColor = options.backgroundColor;
+      boxDiv.style.backgroundImage = 'none';
+      boxDiv.style.borderColor = options.backgroundColor;
+    }
+    boxDiv.style.color = options.textColor || 'black';
     if (_style) {
       for (var key in _style) {
         boxDiv.style[key] = _style[key];
@@ -158,6 +169,8 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
     var btnConfig = {
       positiveButton: {
         label: _positiveButton,
+        backgroundColor: options.positiveButtonBackgroundColor || undefined,
+        color: options.positiveButtonTextColor || undefined,
         click: function(event) {
           /**
            * Positive button click event.
@@ -173,6 +186,8 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
       },
       negativeButton: {
         label: _negativeButton,
+        backgroundColor: options.negativeButtonBackgroundColor || undefined,
+        color: options.negativeButtonTextColor || undefined,
         click: function(event) {
           if (_negativeSnooze !== undefined && _negativeSnooze !== false && WonderPushSDK.snoozeTriggers) WonderPushSDK.snoozeTriggers(_negativeSnooze);
           /**
@@ -193,6 +208,14 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
       var link = document.createElement('a');
       link.href = '#';
       link.className = cssPrefix+'button '+cssPrefix+btn;
+      if (btnConfig[btn].backgroundColor) {
+        link.style.backgroundColor = btnConfig[btn].backgroundColor;
+        link.style.backgroundImage = 'none';
+        link.style.borderColor = btnConfig[btn].backgroundColor;
+      }
+      if (btnConfig[btn].color) {
+        link.style.color = btnConfig[btn].color;
+      }
       link.addEventListener('click', function(event) {
         event.preventDefault();
         event.stopPropagation();
