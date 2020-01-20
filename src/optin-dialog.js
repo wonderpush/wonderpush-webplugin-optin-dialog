@@ -44,30 +44,35 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
       "You can always unsubscribe at any time.": "Vous pouvez vous désinscrire à tout moment.",
       "Subscribe": "Je m'inscris",
       "Later": "Plus tard",
+      "Web push by WonderPush": "Push web par WonderPush",
     },
     "es": {
       "Would you like to subscribe to push notifications?": "¿Desea suscribirse a las notificaciones push?",
       "You can always unsubscribe at any time.": "Siempre puede darse de baja en cualquier momento",
       "Subscribe": "Me suscribo",
       "Later": "Más tarde",
+      "Web push by WonderPush": "Push web por WonderPush",
     },
     "it": {
       "Would you like to subscribe to push notifications?": "Vuoi iscriverti alle notifiche push?",
       "You can always unsubscribe at any time.": "Puoi annullare l'iscrizione in qualsiasi momento",
       "Subscribe": "Mi iscrivo",
       "Later": "Più tardi",
+      "Web push by WonderPush": "Push web di WonderPush",
     },
     "de": {
       "Would you like to subscribe to push notifications?": "Möchten Sie Push-Benachrichtigungen abonnieren?",
       "You can always unsubscribe at any time.": "Sie können sich jederzeit abmelden.",
       "Subscribe": "Register",
       "Later": "Später",
+      "Web push by WonderPush": "Web push von WonderPush",
     },
     "pt": {
       "Would you like to subscribe to push notifications?": "Deseja se inscrever para receber notificações?",
       "You can always unsubscribe at any time.": "Você pode cancelar a qualquer momento.",
       "Subscribe": "Register",
       "Later": "Mais tarde",
+      "Web push by WonderPush": "Push web da WonderPush",
     },
   };
   var locales = WonderPushSDK.getLocales ? WonderPushSDK.getLocales() || [] : [];
@@ -204,7 +209,7 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
     boxDiv.appendChild(buttonsDiv);
     if (!_hidePoweredBy) {
       var poweredByLink = document.createElement('a');
-      poweredByLink.innerHTML = "Web push by WonderPush";
+      poweredByLink.innerHTML = _("Web push by WonderPush");
       poweredByLink.href = "https://docs.wonderpush.com/docs/manage-your-data-and-unsubscribe-from-web-push-notifications";
       poweredByLink.className = cssPrefix+'powered-by';
       poweredByLink.setAttribute('title', 'Web and mobile push notifications');
