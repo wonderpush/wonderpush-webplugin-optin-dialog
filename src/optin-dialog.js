@@ -45,6 +45,30 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
       "Subscribe": "Je m'inscris",
       "Later": "Plus tard",
     },
+    "es": {
+      "Would you like to subscribe to push notifications?": "¿Desea suscribirse a las notificaciones push?",
+      "You can always unsubscribe at any time.": "Siempre puede darse de baja en cualquier momento",
+      "Subscribe": "Me suscribo",
+      "Later": "Más tarde",
+    },
+    "it": {
+      "Would you like to subscribe to push notifications?": "Vuoi iscriverti alle notifiche push?",
+      "You can always unsubscribe at any time.": "Puoi annullare l'iscrizione in qualsiasi momento",
+      "Subscribe": "Mi iscrivo",
+      "Later": "Più tardi",
+    },
+    "de": {
+      "Would you like to subscribe to push notifications?": "Möchten Sie Push-Benachrichtigungen abonnieren?",
+      "You can always unsubscribe at any time.": "Sie können sich jederzeit abmelden.",
+      "Subscribe": "Register",
+      "Later": "Später",
+    },
+    "pt": {
+      "Would you like to subscribe to push notifications?": "Deseja se inscrever para receber notificações?",
+      "You can always unsubscribe at any time.": "Você pode cancelar a qualquer momento.",
+      "Subscribe": "Register",
+      "Later": "Mais tarde",
+    },
   };
   var locales = WonderPushSDK.getLocales ? WonderPushSDK.getLocales() || [] : [];
   var language = locales.map(function(x) { return x.split(/[-_]/)[0]; })[0] || (navigator.language || '').split('-')[0];
