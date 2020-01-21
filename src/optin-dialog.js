@@ -74,6 +74,18 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
       "Later": "Mais tarde",
       "Web push by WonderPush": "Push web da WonderPush",
     },
+    "nl": {
+      "Would you like to subscribe to push notifications?": "Wilt u zich abonneren op pushmeldingen?",
+      "You can always unsubscribe at any time.": "U kunt zich altijd op elk gewenst moment afmelden.",
+      "Subscribe": "Abonneren",
+      "Later": "Later",
+    },
+    "pl": {
+      "Would you like to subscribe to push notifications?": "Czy chcesz subskrybować powiadomienia push?",
+      "You can always unsubscribe at any time.": "Zawsze możesz zrezygnować z subskrypcji w dowolnym momencie.",
+      "Subscribe": "Subskrybuj",
+      "Later": "Później",
+    },
   };
   var locales = WonderPushSDK.getLocales ? WonderPushSDK.getLocales() || [] : [];
   var language = locales.map(function(x) { return x.split(/[-_]/)[0]; })[0] || (navigator.language || '').split('-')[0];
