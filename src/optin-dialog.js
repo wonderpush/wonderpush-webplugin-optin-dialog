@@ -38,6 +38,12 @@
  * @see {@link https://wonderpush.github.io/wonderpush-javascript-sdk/latest/WonderPushPluginSDK.html#.TriggersConfig|WonderPush JavaScript Plugin SDK triggers configuration reference}
  */
 WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, options) {
+
+  // Do not show anything on unsupported browsers.
+  if (WonderPushSDK.Notification.getSubscriptionState() === WonderPushSDK.SubscriptionState.UNSUPPORTED) {
+    return;
+  }
+
   var translations = {
     "fr": {
       "Would you like to subscribe to push notifications?": "Souhaitez-vous vous inscrire aux notifications?",
