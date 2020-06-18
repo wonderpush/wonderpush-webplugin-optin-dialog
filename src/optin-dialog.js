@@ -40,8 +40,11 @@
 WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, options) {
 
   // Do not show anything on unsupported browsers.
-  if (WonderPushSDK.Notification.getSubscriptionState() === WonderPushSDK.SubscriptionState.UNSUPPORTED) {
-    return;
+  if (!WonderPushSDK.isNativePushNotificationSupported()) {
+    return {
+      showDialog: function() {},
+      hideDialog: function() {},
+    };
   }
 
   var translations = {
