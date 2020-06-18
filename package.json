@@ -1,6 +1,6 @@
 {
   "name": "wonderpush-webplugin-optin-dialog",
-  "version": "1.3.10",
+  "version": "1.3.11",
   "description": "WonderPush Web SDK plugin to present the user an opt-in dialog before prompting her for push permission.",
   "main": "src/optin-dialog.js",
   "repository": {
