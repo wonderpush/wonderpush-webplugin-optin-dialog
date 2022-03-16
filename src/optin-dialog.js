@@ -174,6 +174,16 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
       return;
     }
 
+    // Do not show when user already subscribed, denied permission or doesn't support subscription
+    if (window.WonderPush) {
+      var subscriptionState = window.WonderPush.Notification.getSubscriptionState();
+      if (subscriptionState === window.WonderPush.SubscriptionState.SUBSCRIBED
+        || subscriptionState === window.WonderPush.SubscriptionState.UNSUPPORTED
+        || subscriptionState === window.WonderPush.SubscriptionState.DENIED) {
+        return;
+      }
+    }
+
     _registrationInProgress = true;
     var cssPrefix = 'wp-optin-dialog-';
 
