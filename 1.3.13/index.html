@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>optin-dialog Index</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.cerulean.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top ">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">optin-dialog</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="OptinDialog.html">OptinDialog</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="events.list.html" class="dropdown-toggle" data-toggle="dropdown">Events<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="OptinDialog.html#event:event:%2522wonderpush-webplugin-optin-dialog.closeButton.click%2522">OptinDialog#event:"wonderpush-webplugin-optin-dialog.closeButton.click"</a></li><li><a href="OptinDialog.html#event:event:%2522wonderpush-webplugin-optin-dialog.hide%2522">OptinDialog#event:"wonderpush-webplugin-optin-dialog.hide"</a></li><li><a href="OptinDialog.html#event:event:%2522wonderpush-webplugin-optin-dialog.negativeButton.click%2522">OptinDialog#event:"wonderpush-webplugin-optin-dialog.negativeButton.click"</a></li><li><a href="OptinDialog.html#event:event:%2522wonderpush-webplugin-optin-dialog.positiveButton.click%2522">OptinDialog#event:"wonderpush-webplugin-optin-dialog.positiveButton.click"</a></li><li><a href="OptinDialog.html#event:event:%2522wonderpush-webplugin-optin-dialog.show%2522">OptinDialog#event:"wonderpush-webplugin-optin-dialog.show"</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="externals.list.html" class="dropdown-toggle" data-toggle="dropdown">Externals<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="external-WonderPushPluginSDK.html">WonderPushPluginSDK</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-8">
+	
+		<div id="main">
+			
+
+	
+	
+
+
+
+    <h3>wonderpush-webplugin-optin-dialog 1.3.13</h3>
+
+
+
+
+
+
+
+
+
+	
+	
+
+
+
+
+
+    <section class="readme-section">
+        <article><p>WonderPush Web SDK plugin to present the user an opt-in dialog before prompting her for push permission.</p>
+<p>Here is a screenshot of the default dialog shown to the user if no option is given:</p>
+<center>
+![Screenshot of the plugin dialog](screenshot.png)
+</center>
+<p>It appears centered on the top edge of the page and does not scroll with the page.
+The actual icon that will be show is the one you configured in the WonderPush dashboard.</p>
+<h1>How to use this plugin</h1>
+<h2>From the WonderPush dashboard</h2>
+<p>Log in to your <a href="https://dashboard.wonderpush.com/">WonderPush dashboard</a> and head over to the <em>Settings / Configuration</em> page in the left menu.
+Select the <em>Website</em> tab and use this plugin.</p>
+<h2>From the initialization options of the SDK</h2>
+<p>Change your call to <code>WonderPush.init()</code> to include the following, merging existing keys as necessary:</p>
+<pre class="prettyprint source lang-javascript"><code>WonderPush.init({
+  plugins: {
+    &quot;optin-dialog&quot;: {
+      // Add any option to customize the plugin as desired
+    },
+  },
+});
+</code></pre>
+<p>You can find the reference of the options in the <a href="OptinDialog.html#.Options">OptinDialog.Options</a> section of the reference.</p>
+<h1>Reference</h1>
+<p>The available options are described in the <a href="OptinDialog.html#.Options">OptinDialog.Options</a> section of the reference.</p>
+<p>The available API is described on the <a href="OptinDialog.html">OptinDialog</a> class.</p></article>
+    </section>
+
+
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+		<div class="col-md-3">
+			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
+		</div>
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	©2022 WonderPush. All rights reserved.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.2</a>
+	
+		on Mon Apr 25th 2022
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : false,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>
