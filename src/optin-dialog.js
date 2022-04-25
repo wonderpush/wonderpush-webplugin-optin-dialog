@@ -258,7 +258,13 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
            * @event OptinDialog#event:"wonderpush-webplugin-optin-dialog.positiveButton.click"
            */
           if (event.target.dispatchEvent(new Event('wonderpush-webplugin-optin-dialog.positiveButton.click', {bubbles: true, cancelable: true}))) {
-            WonderPushSDK.subscribeToNotifications(event);
+            WonderPushSDK.subscribeToNotifications(event).catch(function(error) {
+              if (error instanceof WonderPush.Errors.UserCancellationError || error instanceof WonderPush.Errors.PermissionError) {
+                console.warn(error);
+                return;
+              }
+              console.error(error);
+            });
             that.hideDialog();
           }
         },
