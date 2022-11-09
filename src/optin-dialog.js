@@ -109,8 +109,15 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
     return text;
   };
 
-  var _title = options.title !== undefined ? options.title : _('Would you like to subscribe to push notifications?');
-  var _message = options.message !== undefined ? options.message : _('You can always unsubscribe at any time.');
+  var defaultTitle = _('Would you like to subscribe to push notifications?');
+  var defaultMessage = _('You can always unsubscribe at any time.');
+  var _title = options.title !== undefined ? options.title : defaultTitle;
+  var _message = options.message !== undefined ? options.message : defaultMessage;
+  var empty = !_title && !_message;
+  if (empty) {
+    _title = defaultTitle;
+    _message = defaultMessage;
+  }
   var _positiveButton = options.positiveButton || _("Subscribe");
   var _negativeButton = options.negativeButton || _("Later");
   var _style = options.style;
