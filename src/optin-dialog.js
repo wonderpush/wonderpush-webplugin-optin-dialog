@@ -298,6 +298,9 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
     var btns = ['negativeButton', 'positiveButton'];
     btns.forEach(function(btn) {
       var link = document.createElement('a');
+      var label = document.createElement('label');
+      label.textContent = btnConfig[btn].label;
+      link.appendChild(label);
       link.href = '#';
       link.className = cssPrefix+'button '+cssPrefix+btn;
       if (btnConfig[btn].backgroundColor) {
@@ -306,7 +309,7 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
         link.style.borderColor = btnConfig[btn].backgroundColor;
       }
       if (btnConfig[btn].color) {
-        link.style.color = btnConfig[btn].color;
+        label.style.color = btnConfig[btn].color;
       }
       link.addEventListener('click', function(event) {
         event.preventDefault();
@@ -314,9 +317,6 @@ WonderPush.registerPlugin("optin-dialog", function OptinDialog(WonderPushSDK, op
         btnConfig[btn].click(event);
       });
       buttonsDiv.appendChild(link);
-      var label = document.createElement('label');
-      label.innerHTML = btnConfig[btn].label;
-      link.appendChild(label);
     });
 
     var closeButton = document.createElement('a');
